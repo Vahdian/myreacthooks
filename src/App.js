@@ -1,31 +1,33 @@
 import './App.css';
 import React, {useReducer} from "react"
- 
-function appReducer(state, action){
+
+const ACTIONS = {
+  INCREMENT: "increment",
+  DECREMENT: "decrement"
+}
+function reducer(state, action){
 switch (action.type) {
-    case "add":{
-      return [
-        ...state,
-        {
-          id:Date.now(),
-          text:"",
-          completed: false,
-        }
-      ]
-    }
-    
-    default:
-      break;
-  }
+  case ACTIONS.INCREMENT:
+    return{ count: state.count +1}
+  case ACTIONS.DECREMENT:
+    return{ count: state.count -1}
+  default:
+    return state
+}
 }
 export default function App() {
-  const [state, dispatch] = useReducer(appReducer, [])
+  const [state, dispatch] = useReducer(reducer, {count: 0})
+  function increment() {
+    dispatch({ type: "increment"})
+  }
+  function decrement() {
+    dispatch({ type: "decrement"})
+  }
   return (
-    <div>
-        <button onClick={() => dispatch({ type: "add"})}>The time please</button>
-    {state.map(item => {
-      <div key={item.id}>{item.id}</div>
-    } )}
+    <div className='App-header'>
+      <button onClick={decrement}>-</button>
+      <span>{state.count}</span>
+      <button onClick={increment}>+</button>
     </div>
   );
 }
